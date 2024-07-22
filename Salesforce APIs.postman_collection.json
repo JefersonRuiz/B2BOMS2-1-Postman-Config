@@ -82,6 +82,188 @@
 			]
 		},
 		{
+			"name": "SObject CRUD",
+			"item": [
+				{
+					"name": "Create Record",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"const id = jsonData.id.split('/');",
+									"",
+									"if (!jsonData.error) {",
+									"    const context = pm.collectionVariables;",
+									"    context.set(\"current_record\", jsonData.id);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"OrderSummaryId\": \"1OsVZ00000007vx0AA\",\n    \"Status\": \"Borrador\",\n    \"FulfilledToName\": \"Test\",\n    \"VehicleLicense__c\": \"AACL99\",\n    \"Transport_Number__c\": 1112233,\n    \"External_Reference_Id__c\": \"124555asdfasdf33\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/{{current_sobject}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								"{{current_sobject}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Record",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Status\": \"Route\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/:SOBJECT/{{current_record}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								":SOBJECT",
+								"{{current_record}}"
+							],
+							"variable": [
+								{
+									"key": "SOBJECT",
+									"value": "FulfillmentOrder"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Record",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{sf_url}}/services/data/v{{version}}/sobjects/:SOBJECT/{{current_record}}",
+							"host": [
+								"{{sf_url}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{version}}",
+								"sobjects",
+								":SOBJECT",
+								"{{current_record}}"
+							],
+							"variable": [
+								{
+									"key": "SOBJECT",
+									"value": "FulfillmentOrder"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Actualizar inventario de productos",
 			"request": {
 				"auth": {
@@ -97,13 +279,14 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"recordId\" : \"20240124128-690247-1240\",\n    \"onHand\": 1,\n    \"sku\": \"000000000000103410\",\n    \"effectiveDate\": \"2024-05-26T14:05:00.781-07:00\",\n    \"safetyStockCount\": 0,\n    \"locationId\": 1220\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fileUpload",
+							"type": "file",
+							"src": "/home/jeferson/OneDrive/Cosas de trabajos/Solu/B2B/COPEC/Postman config/uploadWithFuture.json"
 						}
-					}
+					]
 				},
 				"url": {
 					"raw": "{{sf_url}}/services/data/v60.0/commerce/oci/availability-records/uploads",
@@ -118,10 +301,51 @@
 						"oci",
 						"availability-records",
 						"uploads"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "current_sobject",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "current_record",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

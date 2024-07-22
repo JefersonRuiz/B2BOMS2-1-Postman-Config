@@ -1,6 +1,6 @@
 # CONFIGURACIÓN POSTMAN
 
-En este directorio se entregan dos archivos, uno correspondiente a la plantilla o *template* para el entorno en Postman (<code>SF Environment Template.postman_environment.json</code>), donde se almacenarán los datos de configuración para la conexión con Salesforce, y otro con la colección de los diferentes llamados o solicitudes que se realizan para validar el correcto funcionamiento y configuración de las pruebas.
+En este directorio se entregan dos archivos, uno correspondiente a la plantilla o *template* para el entorno en Postman (<code>SF Environment Template.postman_environment.json</code>), donde se almacenarán los datos de configuración para la conexión con Salesforce, y otro con la colección de los diferentes llamados o solicitudes que se realizan para validar el correcto funcionamiento y configuración de las pruebas (<code>Salesforce APIs.postman_collection.json</code>).
 
 ## Pre-requisitos
 
@@ -40,13 +40,18 @@ Si se necesita, siempre es posible agregar más variables de acuerdo a las neces
 
 ## Colección de llamados.
 
+La colección que se usa para almacenar las diferentes solicitudes a Salesforce se denomina `Salesforce APIs`. Esta colección tiene dos variables de colección relacionadas con qué objeto y que registro se está trabajando. Estas son las variables:
+
+* <code>current_sobject</code>: Se establece en esta variable el *api name* del objeto sobre el que se quiere realizar alguna operación CRUD.
+* <code>current_record</code>: Esta variable guarda el *Id* de Salesforce del registro creado usando el llamado respectivo. Se puede modificar para realizar operaciones diferentes a creación.
+
 ### [POST] Get Auth Token
 
 Este es el llamado que hay que realizar inicialmente para obtener el token de acceso a Salesforce. Si la configuración del entorno explicada previamente se hizo correctamente, y el usuario y la aplicación conectada tienen los permisos y configuraciones necesarias, sólo hará falta dar clic al botón *"Send"* y se obtendrá el token de acceso.
 
 El llamado es de tipo *POST*, y su cuerpo está construido como se muestra a continuación:
 
-| Key   |      Value      |
+| Key | Value |
 |----------|:-------------:|
 | grant_type | `"password"` |
 | client_id |    `{{sf_client_id}}`   |
@@ -83,7 +88,7 @@ Que basicamente establece la variable de entorno `access_token` con el valor de 
 
 **REVISAR**
 
-Este llamado actualizar el inventario de los productos para una locación determinada.
+Este llamado actualiza el inventario de los productos para una locación (área de venta) determinada.
 
 Antes de ejecutar este llamado es necesario primero realizar el llamado para obtener el token de autorización explicado anteriormente, ya que el método de autentincación y autorización requiere el token de acceso que se obtiene como ya se explicó previamente. Es necesario además configurar el cuerpo de la solicitud agregando el archivo `json` llamado `uploadWithFuture`. Este archivo tiene la siguiente estructura:
 
@@ -100,5 +105,12 @@ donde el `sku` se corresponde con el mismo sku del producto en Salesforce, pero 
 
 https://drive.google.com/file/d/1HRIskZQ--xRCZDTrL6LU90WL8L6QK5ab/view
 
+### [POST] Create Record
+
+Esta solicitud permite la creación de registros en los entornos de Salesforce. Para este desarrollo en particular, la solicitud permite la creación de los registros asociados al objeto 
+
+### [PATCH] Create Record
+
+### [DEL] Create Record
 
 
