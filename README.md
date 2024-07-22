@@ -144,7 +144,7 @@ Una vez enviada la solicitud, si no se presenta ningún problema, solo se obtend
 
 En este punto, se deberá validar si el correo electrónico ha llegado como se esperaba.
 
-### [DEL] Create Record
+### [DEL] Delete Record
 
 Para evitar tener multiples ordenes asociadas (No es necesario que esto ocurra para este desarrollo) se disponibiliza esta solicitud para borrar el registro creado y modificado previamente, una vez realizada la prueba.
 
